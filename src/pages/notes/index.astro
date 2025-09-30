@@ -1,0 +1,51 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import style from "@styles/archive.module.css";
+import Entry from "@components/Entry.astro";
+import { readingTime } from "@lib/utils";
+// import NewsletterForm from '@components/custom/NewsletterForm.astro'
+
+const data = (await getCollection("notes"))
+    .filter((article) => !article.data.draft)
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+---
+
+<Layout
+    title={`Notes`}
+    path="/notes/"
+    description="Exploits, hacks, and lessons learned from every challenge, puzzle, and flag captured in the world of CTFs."
+>
+    <main class={style.main}>
+        <div class={style.title}>
+            <h1 class={style.heading}>
+                <span>Write-ups</span>
+            </h1>
+        </div>
+
+        <div class={style.content}>
+            <p>
+                Exploits, hacks, and lessons learned from every challenge, puzzle, and flag captured in the world of CTFs.
+            </p>
+
+            <ul>
+                {
+                    data.map((node) => (
+                            <Entry 
+                                title = {node.data.title}
+                                date = {node.data.date.toString()}
+                                path = { '/' + node.collection + '/' + node.slug}
+                                timeToRead = {readingTime(node.body)}
+                                excerpt = {node.data.excerpt}
+                                tags = {node.data.tags}
+                            />
+                    ))
+                }
+            </ul>
+          <!--TBD add NL form -->
+        
+        </div>
+        
+    </main>
+</Layout>

@@ -1,0 +1,33 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+interface Props {
+   imagePath: string;
+   altText: string;
+   className?: string;
+   styles?: string;
+   imgFolder?: string;
+   loading?: 'lazy' | 'eager';
+}
+
+const { imagePath, altText, className, styles, imgFolder, loading } = Astro.props;
+
+const images = import.meta.glob<{ default: ImageMetadata }>('../images/*.{jpeg,jpg,png,gif}', { eager: true });
+const coverimages = import.meta.glob<{ default: ImageMetadata }>('../images/cover/*.{jpeg,jpg,png,gif}', { eager: true });
+
+//if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: "@images/*.{jpeg,jpg,png,gif}"`);
+const getImageSrc = (path: string, folder: string | undefined) => {
+    const imageModules = folder === 'cover' ? coverimages : images;
+    const matchedPath = Object.keys(imageModules).find(key => key.includes(path));
+    return matchedPath ? imageModules[matchedPath].default : null;
+};
+
+const imageSrc = getImageSrc(imagePath, imgFolder);
+---
+{
+   imageSrc ? 
+      <Image src={imageSrc} alt={altText} class={className} style={styles} loading={loading}/>
+   :
+      <p>Image not found</p>
+}

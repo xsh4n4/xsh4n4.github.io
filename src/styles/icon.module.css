@@ -1,0 +1,29 @@
+.icon {
+  display: inline-block;
+  fill: currentColor;
+  height: 1em;
+  line-height: 1;
+  position: relative;
+  top: -0.125em;
+  vertical-align: middle;
+  width: 1em;
+}
+
+.icon .spin {
+  animation: spin 2s infinite linear;
+}
+
+.logo {
+  display: inline-block;
+  fill: currentColor;
+  position: relative;
+  top: 0.25em;
+  vertical-align: middle;
+}
+
+.sacramentoLogo {
+  font-family: "Sacramento", cursive;
+  font-weight: 700;
+  font-style: bold;
+  font-size: 1.75rem;
+}

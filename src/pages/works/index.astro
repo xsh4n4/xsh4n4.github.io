@@ -1,0 +1,40 @@
+---
+
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import style from "@styles/archive.module.css";
+import Entry from "@components/Entry.astro";
+
+---
+
+
+<Layout
+    title={`Works`}
+    path="/work/"
+    description="A selection of things I've designed, illustrated, and developed."
+>
+    <main class={style.main}>
+        <div class={style.title}>
+            <h1 class={style.heading}>
+                <span>Works</span>
+            </h1>
+        </div>
+
+        <div class={style.content}>
+            <div class={style.intro}>
+                <p>
+                    A selection of things I&rsquo;ve designed, illustrated, and
+                    developed.
+                </p>
+
+                <div class="buttons">
+                    <a href="../cv/resume.pdf" download class="button primary">
+                        Download CV
+                    </a>
+                    <a href="https://xsh4n4.vercel.app" class="button secondary">
+                        View Portfolio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>

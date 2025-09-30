@@ -1,0 +1,39 @@
+---
+import Layout from "@layouts/Layout.astro";
+import site from "../config/site";
+import style from "../styles/archive.module.css";
+import Link from "@components/Link.astro";
+import LeadForm from "@components/custom/LeadForm.astro";
+---
+
+<Layout 
+  title="Contact Me" 
+  description="Get in touch with Suhana Shaik for project discussions, collaborations, and inquiries about web3, automation, and full-stack solutions."
+  pageType="contact"
+  includeLocalBusiness={true}
+  path="/contact/"
+>
+    <main class={style.main}>
+        <div class={style.title}>
+          <h1 class={style.heading}>
+            <span>Contact Me</span>
+          </h1>
+        </div>
+  
+        <div class={style.content}>
+          <p>
+            Have a question for me? My direct messages are open on {' '}<a href={'https://x.com/xsh4n4'} target="_blank">Twitter</a> for short and
+            quick messages.
+          
+          <p>
+            If you have a project you’d like to discuss, it is faster and more
+            efficient to contact me on <a href={'https://wa.me/919705341003'} target="_blank">Whatsapp</a> or write an email
+            to <a href={`mailto:xsh4n4@gmail.com`}>xsh4n4@gmail.com</a>. I enjoy reading detailed emails, so don’t hesitate to write as much as you need.
+          </p>
+          <p>
+            For anything else or if you’re willing to wait, feel free to use the form below.
+          </p>
+          <LeadForm />
+        </div>
+    </main>
+</Layout>

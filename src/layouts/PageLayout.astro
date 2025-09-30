@@ -1,0 +1,165 @@
+---
+import style from "../styles/document.module.css";
+import Link from "@components/Link.astro";
+// import TableOfContents from "@components/TableOfContents.astro";
+import AstroImage from "@components/AstroImage.astro";
+import Layout from "./Layout.astro";
+import { slugify } from '@lib/slugify.mjs';
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
+
+const { frontmatter, headings } = Astro.props;
+
+let lastModified = frontmatter.lastModified
+    ? dayjs(frontmatter.lastModified).utc().format("dddd, MMMM D, YYYY [at] h:mm A")
+    : null;
+
+import type { ServiceData, FAQData, PersonData } from '@lib/schema-generators';
+
+type pageFrontmatter = {
+    id?: number;
+    title: string;
+    hideMeta?: boolean;
+    date: string;
+    image?: string;
+    last_modified_at?: string;
+    lastModified: string;
+    timeToRead: string;
+    tags?: string[];
+    author?: {
+        name: string;
+        url: string;
+    };
+    redirect?: string;
+    pageType?: 'article' | 'notes'| 'home' | 'about' | 'contact' | 'default';
+    // serviceData?: ServiceData;
+    // faqs?: FAQData[];
+    // includeBreadcrumbs?: boolean;
+    // includeLocalBusiness?: boolean;
+};
+---
+<Layout 
+    title={frontmatter.title} 
+    description={frontmatter.title}
+    image={frontmatter.image}
+    datePublished={frontmatter.date}
+    dateModified={frontmatter.lastModified}
+    metaImageSrc={frontmatter.image}
+    article={false}
+    pageType={frontmatter.pageType}
+    serviceData={frontmatter.serviceData}
+    faqs={frontmatter.faqs}
+    includeBreadcrumbs={frontmatter.includeBreadcrumbs}
+    includeLocalBusiness={frontmatter.includeLocalBusiness}
+    path={frontmatter.path}
+>
+<head>
+    {frontmatter.redirect && (
+        <meta http-equiv="refresh" content={`3; url=${frontmatter.redirect}`} />
+    )
+    }
+</head>
+<main id="main">
+    <article class={`${style.document} h-entry`}>
+        <div class={style.title}>
+            <h1 class={`${style.heading} p-name`}>{frontmatter.title}</h1>
+            <div class={style.meta}>
+                <div style={{ display: frontmatter.hideMeta && `none` }}>
+                    <span>
+                        {
+                            frontmatter.author && (
+                                <>
+                                    {frontmatter.last_modified_at
+                                        ? `Updated`
+                                        : `Published`}{" "}
+                                    <span style={{ display: "none" }}>
+                                        by{" "}
+                                        <a
+                                            class="p-author h-card"
+                                            href={frontmatter.author.url}
+                                        >
+                                            {frontmatter.author.name}
+                                        </a>
+                                    </span>
+                                </>
+                            )
+                        }
+                        {
+                            frontmatter.date && (
+                                <span
+                                    style={{
+                                        display:
+                                            frontmatter.lastModified && `none`,
+                                    }}
+                                >
+                                    {" "}
+                                    <time
+                                        class="dt-published"
+                                        datetime={frontmatter.date}
+                                    >
+                                        {frontmatter.date}
+                                    </time>
+                                </span>
+                            )
+                        }
+                        {
+                            frontmatter.lastModified && (
+                                <>
+                                    {" "}
+                                    <time
+                                        class="dt-updated"
+                                        datetime={frontmatter.lastModified}
+                                    >
+                                        {lastModified}
+                                    </time>
+                                </>
+                            )
+                        }
+                    </span>
+                    {
+                        frontmatter.timeToRead && (
+                            <>
+                                {" "}
+                                <span class={style.readTime}>
+                                    {frontmatter.timeToRead}
+                                </span>
+                            </>
+                        )
+                    }
+                </div>
+                {
+                    frontmatter.tags ? (
+                        <div class={style.tags}>
+                            {frontmatter.tags.map((tag: string) => (
+                                <Link className={style.tag}
+                                    to={`/tag/${slugify(tag)}/`}
+                                >
+                                    <span>#{tag}</span>
+                                </Link>
+                            ))}
+                        </div>
+                    ) : null
+                }
+            </div>
+        </div>
+        {
+            frontmatter.image && (
+                <AstroImage
+                    imagePath={ frontmatter.image }
+                    className={style.cover}
+                    styles="background-color:var(--input-background-color)"
+                    altText={frontmatter.title}
+                    loading="eager"
+                />
+            )
+        }
+
+        
+
+        <div class={`${style.content} e-content`}>
+            <slot />
+        </div>
+    </article>
+</main>
+</Layout>

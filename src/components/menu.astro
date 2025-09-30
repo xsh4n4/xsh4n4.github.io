@@ -1,0 +1,145 @@
+---
+import style from "../styles/menu.module.css";
+let { mainMenu, defaultTheme } = Astro.props;
+
+interface MenuItem {
+  path: string;
+  title: string;
+}
+---
+
+<nav
+  id="nav-primary"
+  itemscope
+  itemtype="http://schema.org/SiteNavigationElement"
+  aria-label="Primary navigation"
+  class={style.primaryNavigation}
+>
+  <ul class={style.primaryMenu}>
+    
+    {
+      mainMenu.map((menuItem: MenuItem, index: number) => (
+        <li id={index.toString()} class={style.primaryMenuItem} data-path={menuItem.path}>
+          <a href={menuItem.path} itemprop="url">
+            {menuItem.title}
+          </a>
+        </li>
+      ))
+    }
+    <!-- class={{ [style.active]: window.location.pathname.includes(menuItem.path)  -->
+  </ul>
+</nav>
+<div class={style.siteControls}>
+  <button
+    class={style.themeToggle}
+    id="themeToggleButton"
+    type="button"
+    aria-label="Toggle dark mode"
+    title="Toggle dark mode"
+    data-message={defaultTheme}
+  >
+    <span class={style.themeToggleInner}>
+      <span class={style.themeToggleIcon}></span>
+    </span>
+  </button>
+</div>
+
+
+<script>
+  // This script will run on the client-side
+  // It will toggle the theme based on the user's preference
+  window.addEventListener("load", () => {
+    
+    const themeToggleButton = document.getElementById("themeToggleButton");
+
+    const userThemeSetting = (() => {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      return localStorage.getItem('theme') as string;
+    }
+
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+
+    return themeToggleButton?.dataset.message || 'light';
+  })();
+
+  let userTheme = userThemeSetting;
+
+    const onChangeTheme = () => {
+      const alternateTheme = (userTheme) === "light" ? "dark" : "light";
+      userTheme = alternateTheme;
+      localStorage.setItem("theme", alternateTheme);
+      document.body.dataset.theme = alternateTheme;
+    };
+    // Set initial theme
+    document.body.dataset.theme = userTheme;
+
+    // Attach event listener to the button
+    if (themeToggleButton) {
+      themeToggleButton.addEventListener("click", onChangeTheme);
+    }
+  });
+
+  function updateMenuStyles() {
+  const currentPath = window.location.pathname;
+  document.querySelectorAll('li[data-path]').forEach(li => {
+    if (li instanceof HTMLElement) {
+      const menuPath = li.getAttribute('data-path') || '';
+      
+      // Remove active state
+      li.removeAttribute('data-active');
+      
+      // Special handling for home path '/'
+      if (menuPath === '/') {
+        if (currentPath === '/') {
+          li.setAttribute('data-active', 'true');
+        }
+      } else {
+        if (currentPath.startsWith(menuPath)) {
+          li.setAttribute('data-active', 'true');
+        }
+      }
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', updateMenuStyles);
+
+let lastPath = window.location.pathname;
+setInterval(() => {
+  const currentPath = window.location.pathname;
+  if (lastPath !== currentPath) {
+    lastPath = currentPath;
+    updateMenuStyles();
+  }
+}, 300);
+//   // Add active class to the current menu item
+//   function updateMenuStyles() {
+//   const currentPath = window.location.pathname;
+//   document.querySelectorAll('li[data-path]').forEach(li => {
+//     if (li instanceof HTMLElement) {
+//       // Reset style for all elements first to avoid multiple selections
+//       li.style.fontWeight = 'normal'; 
+//       // Apply style if the path matches
+//       if (currentPath.includes(li.getAttribute('data-path') || '')) {
+//         li.style.fontWeight = '700';
+//       }
+//     }
+//   });
+// }
+
+// // Run once when the page is fully loaded
+// document.addEventListener('DOMContentLoaded', updateMenuStyles);
+
+// // Optional: Check for path changes periodically
+// // This is a simple but not the most efficient way to detect URL changes
+// let lastPath = window.location.pathname;
+// setInterval(() => {
+//   const currentPath = window.location.pathname;
+//   if (lastPath !== currentPath) {
+//     lastPath = currentPath;
+//     updateMenuStyles();
+//   }
+// }, 300); // Check every second
+</script>

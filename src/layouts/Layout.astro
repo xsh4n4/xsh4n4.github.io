@@ -1,0 +1,130 @@
+---
+import '../styles/layout.module.css';
+import Head from "@components/Head.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import site from "../config/site"
+import Alert from "../components/custom/alert.astro";
+import style from "../styles/grid.module.css";
+
+
+import type { ServiceData, FAQData, CampaignData } from '@lib/schema-generators';
+
+type Props = {
+  title?: string;
+  description: string;
+  image?: string;
+  datePublished?: string,
+  dateModified?: string | null,
+  metaImageSrc?: string,
+  metaImageHeight?: string,
+  metaImageWidth?: string,
+  path?: string,
+  article?: boolean,
+  authorname?: string,
+  authorurl?: string,
+  pageType?: 'article' | 'notes' | 'home' | 'about' | 'contact' | 'default';
+  serviceData?: ServiceData;
+  faqs?: FAQData[];
+  campaignData?: CampaignData;
+  includeBreadcrumbs?: boolean;
+  includeLocalBusiness?: boolean;
+  keywords?: string[];
+};
+
+const { 
+  title,
+  description,
+  datePublished,
+  metaImageSrc,
+  metaImageHeight,
+  metaImageWidth,
+  path,
+  article,
+  authorname,
+  authorurl,
+  pageType,
+  serviceData,
+  faqs,
+  campaignData,
+  includeBreadcrumbs,
+  includeLocalBusiness,
+  keywords,
+  } = Astro.props;
+  
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
+    <Head 
+      title={ title ? `${title} - ${site.title}` : `${site.title}` } 
+      description={description}
+      datePublished = {datePublished},
+      dateModified = {new Date().toISOString()},
+      metaImage = {{
+        src: metaImageSrc,
+        height: metaImageHeight,
+        width: metaImageWidth,
+      }},
+      path = {path},
+      article = {article},
+      author = {{
+        name: authorname,
+        url: authorurl,
+      }},
+      pageType = {pageType},
+      serviceData = {serviceData},
+      faqs = {faqs},
+      campaignData = {campaignData},
+      includeBreadcrumbs = {includeBreadcrumbs},
+      includeLocalBusiness = {includeLocalBusiness},
+      keywords = {keywords}
+    />
+      <!-- Service worker registration. -->
+
+		<script is:inline src="/registerSW.js"></script>
+		<link rel="manifest" href="/manifest.webmanifest" />
+  </head>
+  <body data-theme="light">
+    <!-- {Astro.props.preBodyComponents} -->
+    <noscript id="gatsby-noscript">
+      <Alert align="center">
+        <p>
+          <strong>Heads up!</strong> This website works best with JavaScript enabled.
+        </p>
+      </Alert>
+    </noscript>
+    <div id="___gatsby">
+      <div class={style.wrapper}>
+        <Header
+          siteTitle={site.title}
+          defaultTheme={site.defaultTheme}
+          mainMenu={site.mainMenu}
+        /> 
+
+        <slot />
+
+        <Footer
+          
+          twitter={site.twitterUrl}
+          github={site.githubUrl}
+          linkedin={site.linkedinUrl}
+          
+        />
+
+      </div>
+    </div>
+    <!-- {Astro.props.postBodyComponents} -->
+    <script>
+			// This is a hack to get vite-plugin-pwa to generate a sw.js file.
+			// Do not remove this script tag.
+		</script>
+  </body>
+</html>

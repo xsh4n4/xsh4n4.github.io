@@ -1,0 +1,58 @@
+---
+import Layout from "@layouts/Layout.astro";
+import site from "../config/site";
+import style from "../styles/archive.module.css";
+import landingStyle from "../styles/landing.module.css";
+import { getCollection } from "astro:content";
+
+// 🔹 Get all content collections (e.g., articles, notes, works, etc.)
+const posts = await getCollection("articles");
+const notes = await getCollection("notes");
+// const works = await getCollection("works");
+
+// 🔹 Combine everything into one big list
+const allEntries = [...posts, ...notes];
+
+// 🔹 Extract unique tags from frontmatter
+const tags = Array.from(
+  new Set(
+    allEntries.flatMap((entry) => entry.data.tags || [])
+  )
+).sort();
+---
+
+<Layout
+  description={site.description}
+  pageType="home"
+  includeLocalBusiness={true}
+  path="/"
+>
+  <main id="main" class={style.main}>
+    <!-- <div class={landingStyle.title}>
+      <h1 class={style.heading}>
+        <span>
+          <strong>Automate Your Operations.</strong><br />
+          <strong>Own Your Tools.</strong><br />
+          I help creative agencies and teams integrate AI workflows & open-source
+          solutions to reclaim thousands of productive hours.
+        </span>
+      </h1>
+    </div> -->
+
+    <div class={style.content}>
+      <h2 class={style.subHeading}>
+        <span>All Tags</span>
+      </h2>
+
+      <ul class={`${style.gridListExpanded} ${style.navList}`}>
+        {tags.map((tag) => (
+          <li id={tag}>
+            <a href={`/tag/${tag}/`} class="btn">
+              #{tag}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </main>
+</Layout>

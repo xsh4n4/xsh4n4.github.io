@@ -1,0 +1,52 @@
+---
+import TwitterIcon from './icons/twitter-icon.astro'
+import LinkedinIcon from './icons/linkedin-icon.astro'
+import GithubIcon from './icons/github-icon.astro'
+import MailIcon from './icons/mail-icon.astro'
+import style from '../styles/footer.module.css'
+
+
+const { twitter, github, linkedin, mail } = Astro.props
+interface MenuItem {
+  path: string;
+  title: string;
+}
+---
+<div class={style.footerbg} >
+<footer id="footer" class={`${style.footer} animate`}>
+  <div class={style.copyright}>
+    <ul>
+      &copy; 2024&mdash;{new Date().getFullYear()} <a href="https://xsh4n4.vercel.app">Suhana Shaik</a>. All Rights Reserved.
+    </div></ul>
+  <ul class={style.menuSocial}>
+      <li>
+        <a href="mailto:xsh4n4@gmail.com" rel="nofollow">
+          <MailIcon />
+          <span class={style.iconLabel}>Mail</span>
+        </a>
+      </li>
+      <li>
+        <a href={linkedin} rel="nofollow">
+          <LinkedinIcon />
+          <span class={style.iconLabel}>LinkedIn</span>
+        </a>
+      </li>
+      <li>
+        <a href={twitter} rel="nofollow">
+          <TwitterIcon />
+          <span class={style.iconLabel}>Twitter</span>
+        </a>
+      </li>
+      <li>
+        <a href={github} rel="nofollow">
+          <GithubIcon />
+          <span class={style.iconLabel}>GitHub</span>
+        </a>
+      </li>
+      
+    
+  </ul>
+  
+  
+</footer>
+</div>

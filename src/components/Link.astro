@@ -1,0 +1,31 @@
+---
+
+type Props = {
+  to: string;
+  external?: boolean;
+  underline?: boolean;
+  group?: boolean;
+  className?: string;
+  rel?: string;
+};
+
+const {
+  to,
+  external,
+  underline = true,
+  group = false,
+  className,
+  rel,
+  ...rest
+} = Astro.props;
+---
+
+<a
+  href={to}
+  target={external ? "_blank" : "_self"}
+  class={className}
+  rel={rel}
+  {...rest}
+>
+  <slot />
+</a>

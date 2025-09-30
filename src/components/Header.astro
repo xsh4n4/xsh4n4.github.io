@@ -1,0 +1,44 @@
+---
+import MeteoricIcon from './icons/meteoric-icon.astro'
+import Menu from './menu.astro'
+import style from '../styles/header.module.css'
+
+let { siteTitle, mainMenu, defaultTheme } = Astro.props
+
+---
+
+<header transition:persist>
+
+  <nav class={style.skipLinks}>
+        <ul>
+          <li>
+            <a href="#nav-primary" class={style.shortcut}>
+              Skip to primary navigation
+            </a>
+          </li>
+          <li>
+            <a href="#main" class={style.shortcut}>
+              Skip to content
+            </a>
+          </li>
+          <li>
+            <a href="#footer" class={style.shortcut}>
+              Skip to footer
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+
+      <header class={style.header}>
+        <div class={style.name}>
+          <a href="https://xsh4n4.vercel.app">
+            <MeteoricIcon />
+            <span class={style.logoLabel}>{siteTitle}</span>
+          </a>
+        </div>
+        <Menu mainMenu={mainMenu} defaultTheme={defaultTheme} />
+
+      </header>
+
+</header>
