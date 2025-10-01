@@ -66,8 +66,8 @@ import { remarkReadingTime } from './src/lib/remark-reading-time.mjs';
 import { remarkModifiedTime } from './src/lib/remark-modified-time.mjs';
 
 export default defineConfig({
-  site: 'https://xsh4n4.github.io/writeups',
-  base: '/writeups/',
+  site: 'https://xsh4n4.github.io',
+  base: '/',
   output: "static", // static build
   integrations: [mdx(), playformCompress()],
   markdown: {
