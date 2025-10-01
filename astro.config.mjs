@@ -42,7 +42,7 @@ export default defineConfig({
       }
     })]
   },
-  output: "hybrid", // add `export const prerender = false` to any files that should be server-rendered on demand
+  output: "static", // add `export const prerender = false` to any files that should be server-rendered on demand
   adapter: cloudflare({
     platformProxy: {
       enabled: true,
