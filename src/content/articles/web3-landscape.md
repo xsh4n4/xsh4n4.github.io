@@ -5,7 +5,7 @@ path: /articles/web3-landscape/
 categories: [articles]
 tags: [web3, blockchain]
 date: 2024-03-16
-last_modified_at: 2024-03-16T09:59:14-05:00
+last_modified_at: 2024-03-16T09:59:14
 comments: true
 toc: true
 ---

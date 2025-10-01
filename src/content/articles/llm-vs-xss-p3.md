@@ -5,7 +5,7 @@ path: /articles/llm-vs-xss-p3/
 categories: [articles]
 tags: [cybersecurity, llm, xss, ai]
 date: 2024-01-06
-last_modified_at: 2024-01-06T09:59:14-05:00
+last_modified_at: 2024-01-06T09:59:14
 comments: true
 featured: true
 toc: true

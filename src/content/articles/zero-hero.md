@@ -5,7 +5,7 @@ path: /articles/zero-hero/
 categories: [articles]
 tags: [bugbounty, cybersecurity]
 date: 2024-07-20
-last_modified_at: 2024-07-20T09:59:14-05:00
+last_modified_at: 2024-07-20T09:59:14
 comments: true
 toc: true
 ---

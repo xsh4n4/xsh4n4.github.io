@@ -2,7 +2,7 @@
 import Layout from "@layouts/Layout.astro";
 import site from "../config/site";
 import style from "../styles/archive.module.css";
-import landingStyle from "../styles/landing.module.css";
+// import landingStyle from "../styles/landing.module.css";
 import { getCollection } from "astro:content";
 
 // 🔹 Get all content collections (e.g., articles, notes, works, etc.)
@@ -20,6 +20,48 @@ const tags = Array.from(
   )
 ).sort();
 ---
+<style>
+  
+
+  .demo-wrap { max-width: 900px; margin: 0 auto; padding-bottom: 2.5rem; }
+
+  /* ===== the working tag cloud CSS ===== */
+  ul.gridListExpanded {
+    display: flex;
+    flex-wrap: wrap;               /* allow multiple tags per row */
+    justify-content: center;       /* center each row as a group */
+    gap: 8px 14px;                 /* row-gap | column-gap (edge-to-edge) */
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  ul.gridListExpanded li {
+    flex: 0 0 auto;                /* do not shrink or grow to fill the row */
+    display: inline-flex;
+    margin: 0;                     /* spacing handled by gap */
+  }
+
+  /* override common interfering rules (bootstrap/theme .btn etc.) */
+  ul.gridListExpanded a,
+  ul.gridListExpanded .btn {
+    display: inline-block !important;
+    width: auto !important;        /* prevents width:100% from taking effect */
+    min-width: 0;                  /* prevents minimum width from causing one-per-row */
+    padding: 6px 12px;
+    white-space: nowrap;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    
+  }
+
+  /* small responsive tweak */
+  @media (max-width: 420px) {
+    ul.gridListExpanded { gap: 6px 8px; }
+    ul.gridListExpanded a { padding: 5px 8px; font-size: 14px; }
+  }
+</style>
 
 <Layout
   description={site.description}
@@ -28,23 +70,13 @@ const tags = Array.from(
   path="/"
 >
   <main id="main" class={style.main}>
-    <!-- <div class={landingStyle.title}>
-      <h1 class={style.heading}>
-        <span>
-          <strong>Automate Your Operations.</strong><br />
-          <strong>Own Your Tools.</strong><br />
-          I help creative agencies and teams integrate AI workflows & open-source
-          solutions to reclaim thousands of productive hours.
-        </span>
-      </h1>
-    </div> -->
 
     <div class={style.content}>
       <h2 class={style.subHeading}>
         <span>All Tags</span>
       </h2>
-
-      <ul class={`${style.gridListExpanded} ${style.navList}`}>
+    <div class="demo-wrap">
+      <ul class="gridListExpanded">
         {tags.map((tag) => (
           <li id={tag}>
             <a href={`/tag/${tag}/`} class="btn">
@@ -53,6 +85,7 @@ const tags = Array.from(
           </li>
         ))}
       </ul>
+    </div>
     </div>
   </main>
 </Layout>

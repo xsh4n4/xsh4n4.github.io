@@ -6,7 +6,7 @@ path: /articles/ai-blockchain/
 categories: [articles]
 tags: [ ai, blockchain, web3]
 date: 2025-2-12
-last_modified_at: 2025-2-12T20:49:14-05:00
+last_modified_at: 2025-2-12T20:49:14
 comments: true
 toc: true
 

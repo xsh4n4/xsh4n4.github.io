@@ -5,5 +5,5 @@ binding = "DB"
 database_name = "meteoric"
 database_id = "8380ec22-098e-4814-a56f-48d907425b35"
 
-[env.production]
-SENDGRID_API_KEY = "your_sendgrid_api_key_here"
+
+

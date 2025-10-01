@@ -5,12 +5,14 @@ import { manifest } from "./src/config/manifest";
 import { remarkReadingTime } from './src/lib/remark-reading-time.mjs';
 import { remarkModifiedTime } from './src/lib/remark-modified-time.mjs';
 import playformCompress from "@playform/compress";
+import { defineConfig } from 'astro/config';
 
 import cloudflare from "@astrojs/cloudflare";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://xsh4n4.vercel.app",
+  site: 'https://xsh4n4.github.io/writeups', // your actual repo URL
+  base: '/', // repo name
   integrations: [mdx(), playformCompress()], 
   markdown: {
     syntaxHighlight: 'prism',
