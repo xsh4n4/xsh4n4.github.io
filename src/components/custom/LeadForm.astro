@@ -1,4 +1,4 @@
----
+<!-- ---
 ---
 <style>
   .notice {
@@ -74,6 +74,103 @@
         await emailjs.send(
           'service_k4fwsgi',   // your service ID
           'template_6ipv04p',  // your template ID
+          {
+            name: form.usrname.value,
+            email: form.email.value,
+            message: form.msg.value,
+            time: new Date().toLocaleString(),
+          }
+        );
+
+        formDiv.style.display = 'none';
+        noticeDiv.style.display = 'block';
+      } catch (err) {
+        console.error(err);
+        errorDiv.textContent = 'Failed to send message. Please try again later.';
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  });
+</script> -->
+
+---
+---
+<style>
+  .notice {
+    display: none;
+  }
+  .error {
+    color: red;
+    margin-top: 0.5rem;
+  }
+</style>
+
+<!-- Include EmailJS CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" is:raw defer></script>
+
+<form id="contact-form" name="contact-form">
+  <div class="custom-block formblock">
+    <div class="form-group">
+      <label for="usrname">Name
+        <input id="usrname" name="usrname" type="text" maxlength="511" required />
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email address <small>(will remain private)</small>
+        <input id="email" name="email" type="email" maxlength="511" required />
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label for="msg">Message
+        <textarea id="msg" name="msg" rows="10" cols="50" required></textarea>
+      </label>
+    </div>
+
+    <div class="form-group">
+      <button id="saveForm" class="btn submit" type="submit">Send message</button>
+      <div class="error"></div>
+    </div>
+  </div>
+
+  <div class="custom-block notice">
+    <div class="custom-block-heading">Message successfully sent!</div>
+    <div class="custom-block-body">
+      <p>Hey!</p>
+      <p>
+        I have received your message. Keep an eye on your mailbox! Meanwhile, check my <a href="/notes/">latest posts</a>.
+      </p>
+      <p>Till then, cheers!</p>
+    </div>
+  </div>
+</form>
+
+<script is:raw>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (!window.emailjs) {
+      console.error('EmailJS is not loaded');
+      return;
+    }
+
+    emailjs.init('ZrVUh7Q7uTN1RZT1h'); // Initialize EmailJS
+
+    const form = document.getElementById('contact-form');
+    const errorDiv = document.querySelector('.error');
+    const formDiv = document.querySelector('.formblock');
+    const noticeDiv = document.querySelector('.notice');
+    const submitBtn = document.getElementById('saveForm');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorDiv.textContent = '';
+      submitBtn.disabled = true;
+
+      try {
+        await emailjs.send(
+          'service_k4fwsgi',   // Service ID
+          'template_6ipv04p',  // Template ID
           {
             name: form.usrname.value,
             email: form.email.value,

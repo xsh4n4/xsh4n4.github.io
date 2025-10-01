@@ -12,7 +12,7 @@ import cloudflare from "@astrojs/cloudflare";
 // https://astro.build/config
 export default defineConfig({
   site: 'https://xsh4n4.github.io/writeups', // your actual repo URL
-  base: '/writeups/', // repo name
+  base: '/', // repo name
   integrations: [mdx(), playformCompress()], 
   markdown: {
     syntaxHighlight: 'prism',

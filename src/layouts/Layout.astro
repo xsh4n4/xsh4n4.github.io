@@ -23,7 +23,9 @@ type Props = {
   article?: boolean,
   authorname?: string,
   authorurl?: string,
-  pageType?: 'article' | 'notes' | 'home' | 'about' | 'contact' | 'default';
+  // pageType?: 'article' | 'notes' | 'home' | 'about' | 'contact' | 'default';
+  pageType?: "default" | "about" | "article" | "service" | "faq" | "home" | "contact" | "campaign";
+
   serviceData?: ServiceData;
   faqs?: FAQData[];
   campaignData?: CampaignData;

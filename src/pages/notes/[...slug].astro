@@ -45,10 +45,15 @@ function getPrevPost() {
   }
 }
 
-const nextPost = getNextPost();
-const prevPost = getPrevPost();
+// const nextPost = getNextPost();
+// const prevPost = getPrevPost();
+const nextPost = getNextPost() ?? null;
+const prevPost = getPrevPost() ?? null;
 
-const post = Astro.props;
+
+// const post = Astro.props;
+const post: CollectionEntry<"notes"> = Astro.props;
+
 const { Content, headings, remarkPluginFrontmatter } = await post.render();
 const readTime = readingTime(post.body);
 
@@ -122,26 +127,44 @@ let lastModified = remarkPluginFrontmatter.lastModified
   <span>
     {post.data.date && (
       <span style={{ display: post.data.last_modified_at ? "none" : "inline" }}>
-        <time class="dt-published" datetime={post.data.date}>
+        {/* <time class="dt-published" datetime={post.data.date}>
           {new Date(post.data.date).toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
             day: "numeric",
           })}
-        </time>
+        </time> */}
+        <time class="dt-published" datetime={post.data.date.toISOString()}>
+  {new Date(post.data.date).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  })}
+</time>
+
       </span>
     )}
 
     {post.data.last_modified_at && (
-      <time class="dt-updated" datetime={post.data.last_modified_at}>
-        {new Date(post.data.last_modified_at).toLocaleString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        })}
-      </time>
+      // <time class="dt-updated" datetime={post.data.last_modified_at}>
+      //   {new Date(post.data.last_modified_at).toLocaleString("en-US", {
+      //     year: "numeric",
+      //     month: "long",
+      //     day: "numeric",
+      //     hour: "2-digit",
+      //     minute: "2-digit",
+      //   })}
+      // </time>
+      <time class="dt-updated" datetime={post.data.last_modified_at.toISOString()}>
+  {new Date(post.data.last_modified_at).toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  })}
+</time>
+
     )}
   </span>
 
