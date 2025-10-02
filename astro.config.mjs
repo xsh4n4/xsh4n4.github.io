@@ -67,6 +67,7 @@ export default defineConfig({
   site: 'https://xsh4n4.github.io',
   base: '/',
   output: "static", // static build
+  outDir: 'dist',
   integrations: [mdx(), playformCompress()],
   markdown: {
     syntaxHighlight: 'prism',
