@@ -23,9 +23,7 @@ type Props = {
   article?: boolean,
   authorname?: string,
   authorurl?: string,
-  // pageType?: 'article' | 'notes' | 'home' | 'about' | 'contact' | 'default';
-  pageType?: "default" | "about" | "article" | "service" | "faq" | "home" | "contact" | "campaign";
-
+  pageType?: 'article' | 'service' | 'faq' | 'home' | 'about' | 'contact' | 'campaign' | 'default';
   serviceData?: ServiceData;
   faqs?: FAQData[];
   campaignData?: CampaignData;
@@ -65,6 +63,9 @@ const {
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="/images/oneko-logo.jpg" />
+<link rel="shortcut icon" href="/images/oneko-logo.jpg" />
+
     <Head 
       title={ title ? `${title} - ${site.title}` : `${site.title}` } 
       description={description}
@@ -92,7 +93,7 @@ const {
       <!-- Service worker registration. -->
 
 		<script is:inline src="/registerSW.js"></script>
-		<!-- <link rel="manifest" href="/manifest.webmanifest" /> -->
+		<link rel="manifest" href="/manifest.webmanifest" />
   </head>
   <body data-theme="light">
     <!-- {Astro.props.preBodyComponents} -->

@@ -5,7 +5,221 @@ https://prismjs.com/download.html#themes=prism-tomorrow&languages=markup+css+cli
  * Based on https://github.com/chriskempson/tomorrow-theme
  * @author Rose Pritchard
  */
+/* 
+pre[class*='language-'] {
+  width: 100%;
+  color: #a9a9b3;
+  background: none;
+  font-family: var(--monospace-font);
+  text-align: left;
+  white-space: pre-wrap;
 
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+pre[class*='language-'] {
+  padding: 1.5em 1em 1em;
+  overflow: auto;
+  background: #1a1a1d !important;
+  border-radius: var(--border-radius);
+}
+
+.token {
+  word-break: break-word;
+}
+
+.token.comment,
+.token.block-comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.token.punctuation {
+  color: #a9a9b3;
+}
+
+.token.tag,
+.token.attr-name,
+.token.namespace,
+.token.deleted {
+  color: #e2777a;
+}
+
+.token.function-name {
+  color: #6196cc;
+}
+
+.token.boolean,
+.token.number,
+.token.function {
+  color: #f08d49;
+}
+
+.token.property,
+.token.class-name,
+.token.constant,
+.token.symbol {
+  color: #f8c555;
+}
+
+.token.selector,
+.token.important,
+.token.atrule,
+.token.keyword,
+.token.builtin {
+  color: #cc99cd;
+}
+
+.token.string,
+.token.char,
+.token.attr-value,
+.token.regex,
+.token.variable {
+  color: #7ec699;
+}
+
+.token.operator,
+.token.entity,
+.token.url {
+  color: #67cdcc;
+}
+
+.token.important,
+.token.bold {
+  font-weight: 700;
+}
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.inserted {
+  color: green;
+}
+
+pre[class*='language-'].line-numbers {
+  position: relative;
+  padding-left: 65px;
+  counter-reset: linenumber;
+}
+
+pre[class*='language-'].line-numbers > code {
+  position: relative;
+  white-space: inherit;
+}
+
+.line-numbers .line-numbers-rows {
+  position: absolute;
+  pointer-events: none;
+  top: 1em;
+  font-size: 100%;
+  left: 5px !important;
+  width: 3em !important;
+  letter-spacing: -1px;
+  border-right: 1px solid;
+  opacity: 0.5;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.line-numbers-rows > span {
+  pointer-events: none;
+  display: block;
+  counter-increment: linenumber;
+}
+
+.line-numbers-rows > span:before {
+  content: counter(linenumber);
+  color: #999;
+  display: block;
+  padding-right: 0.8em;
+  text-align: right;
+}
+
+div.code-toolbar {
+  position: relative;
+}
+
+div.code-toolbar > .toolbar {
+  position: absolute;
+  top: 0.3em;
+  right: 0.2em;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0;
+}
+
+div.code-toolbar:hover > .toolbar {
+  opacity: 1;
+}
+
+div.code-toolbar > .toolbar .toolbar-item {
+  display: inline-block;
+}
+
+div.code-toolbar > .toolbar a {
+  cursor: pointer;
+}
+
+div.code-toolbar > .toolbar button {
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  overflow: visible;
+  padding: 0;
+  -webkit-user-select: none; 
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+div.code-toolbar > .toolbar a,
+div.code-toolbar > .toolbar button,
+div.code-toolbar > .toolbar span {
+  color: #bbb;
+  font-size: 0.8em;
+  padding: 0 0.5em;
+  background: #f5f2f0;
+  background: rgba(224, 224, 224, 0.2);
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.2);
+  border-radius: 0.5em;
+}
+
+div.code-toolbar > .toolbar a:hover,
+div.code-toolbar > .toolbar a:focus,
+div.code-toolbar > .toolbar button:hover,
+div.code-toolbar > .toolbar button:focus,
+div.code-toolbar > .toolbar span:hover,
+div.code-toolbar > .toolbar span:focus {
+  color: inherit;
+  text-decoration: none;
+} */
+
+
+/* PrismJS 1.15.0
+https://prismjs.com/download.html#themes=prism-tomorrow&languages=markup+css+clike+javascript+actionscript+apacheconf+applescript+c+csharp+bash+cpp+coffeescript+ruby+csp+css-extras+diff+django+docker+elixir+elm+markup-templating+erlang+fsharp+flow+git+go+graphql+less+handlebars+haskell+http+java+json+kotlin+latex+markdown+makefile+objectivec+ocaml+perl+php+php-extras+sql+processing+scss+python+jsx+typescript+reason+textile+rust+sass+stylus+scheme+pug+swift+yaml+haml+toml+twig+tsx+vim+visual-basic+wasm&plugins=line-numbers+toolbar+jsonp-highlight+command-line+copy-to-clipboard */
+/**
+ * prism.js tomorrow night eighties for JavaScript, CoffeeScript, CSS and HTML
+ * Based on https://github.com/chriskempson/tomorrow-theme
+ * @author Rose Pritchard
+ */
+
+/* Base PrismJS Styles */
 pre[class*='language-'] {
   width: 100%;
   color: #a9a9b3;
@@ -209,4 +423,74 @@ div.code-toolbar > .toolbar span:hover,
 div.code-toolbar > .toolbar span:focus {
   color: inherit;
   text-decoration: none;
+}
+
+/* ---- ALIGN CODE BLOCKS WITH CONTENT ---- */
+article pre[class*='language-'],
+.markdown-content pre[class*='language-'] {
+  max-width: 800px; /* match content width */
+  margin: 1rem auto 1rem; /* top/bottom margin */
+  padding: 1rem 1rem 1rem; /* top padding 1rem, bottom unchanged */
+  overflow: auto;
+  width: calc(100% - 2rem);
+  box-sizing: border-box;
+  white-space: pre-wrap; /* wrap long lines */
+  word-break: break-word;
+}
+
+/* Copy button positioning */
+/* pre > .copy-code {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  cursor: pointer;
+}
+
+
+@media (max-width: 768px) {
+  article pre[class*='language-'],
+  .markdown-content pre[class*='language-'] {
+    padding: 0.5rem 0.5rem 0.5rem; 
+    width: calc(100% - 1rem);
+  }
+  pre > .copy-code {
+    top: 0.25rem;
+    right: 0.25rem;
+  }
+} */
+
+
+pre[class*='language-'] {
+  position: relative; /* important for button */
+  padding: 1.5em 1em 1em;
+  overflow: auto;
+  background: #1a1a1d !important;
+  border-radius: var(--border-radius);
+}
+
+/* Copy button inside pre */
+pre > .copy-code {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  cursor: pointer;
+  background: rgba(224, 224, 224, 0.753);
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  z-index: 10;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  pre[class*='language-'] {
+    padding: 0.5rem 0.5rem 0.5rem;
+  }
+  pre > .copy-code {
+    top: 0.25rem;
+    right: 0.25rem;
+    font-size: 0.7rem;
+    padding: 0.15rem 0.4rem;
+  }
 }

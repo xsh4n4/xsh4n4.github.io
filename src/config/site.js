@@ -4,23 +4,23 @@ const site = {
   titleAlt: "xsh4n4's", // Title for schema.org JSONLD
   // eslint-disable-next-line prettier/prettier
   description: 'Suhana Shaik is a Blockchain developer and cyber security enthusiast.',
-  url: 'https://xsh4n4.vercel.app', // Domain of your site. No trailing slash!
+  url: 'https://xsh4n4.github.io', // Domain of your site. No trailing slash!
   siteLanguage: 'en', // Language Tag on <html> element
   image: {
     // Used for SEO, relative to /static/ folder
-    src: '/images/theme/oneko-logo.jpg',
+    src: '/images/oneko-logo.jpg',
     width: 675,
     height: 675,
   },
   ogLanguage: 'en_US', // Facebook Language
 
   // Site config
-  copyrights: `&copy; 2024&mdash;${new Date().getFullYear()} <a href="https://xsh4n4.vercel.app">Suhana Shaik</a>. Some Rights Reserved.`,
+  copyrights: `&copy; 2024&mdash;${new Date().getFullYear()} <a href="https://xsh4n4.vercel.app">Suhana Shaik</a>. All Rights Reserved.`,
   defaultTheme: 'light',
   postsPerPage: 10,
 
   // JSONLD / Manifest
-  favicon: '/images/theme/oneko-logo.jpg', // Used for manifest favicon generation
+  favicon: '/images/oneko-logo.jpg', // Used for manifest favicon generation
   shortName: "xsh4n4's", // shortname for manifest. MUST be shorter than 12 characters
   author: {
     // Author for schema.org JSONLD

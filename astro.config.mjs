@@ -53,10 +53,8 @@
 //   routes: true,
 // }),
 
-// });
+// })
 
-// astro.config.mjs
-// astro.config.mjs
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import playformCompress from "@playform/compress";

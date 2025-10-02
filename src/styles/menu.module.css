@@ -193,3 +193,38 @@
 .primaryMenuItem[data-active="true"] a:hover {
   text-decoration: underline;
 }
+
+.primaryMenu {
+  display: flex;
+  flex-wrap: wrap;       /* items go to next line if needed */
+  justify-content: center;
+  gap: 1rem;             /* space between items */
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* .primaryMenu li a {
+  text-decoration: none;
+  color: inherit;
+  white-space: nowrap;   
+} */
+
+.primaryMenu li a {
+  text-decoration: none;
+  color: inherit;
+  white-space: nowrap;   /* prevent word split */
+  padding-top: 0.9rem;     /* default for laptop */
+  padding-bottom: 0;     
+  line-height: 1;
+  display: inline-block;
+}
+
+/* Mobile view adjustments */
+@media (max-width: 768px) {  /* adjust breakpoint as needed */
+  .primaryMenu li a {
+    padding-top: 0.5rem;   /* smaller top padding on mobile */
+  }
+}
+
+

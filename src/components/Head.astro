@@ -577,9 +577,9 @@ const {
 </script>
 
 <!-- Copy code button functionality - deferred for performance -->
-<script is:inline defer>
+<!-- <script is:inline defer>
   function addCopyCodeButtons() {
-    let copyButtonLabel = "✂️ copy";
+    let copyButtonLabel = "copy";
     let codeBlocks = Array.from(document.querySelectorAll("pre"));
 
     async function copyCode(codeBlock, copyButton) {
@@ -588,7 +588,7 @@ const {
         const textToCopy = codeText.replace(buttonText, "");
 
         await navigator.clipboard.writeText(textToCopy);
-        copyButton.innerText = "✅ copied!";
+        copyButton.innerText = "copied!";
 
         setTimeout(() => {
             copyButton.innerText = copyButtonLabel;
@@ -617,7 +617,46 @@ const {
 
 document.addEventListener("DOMContentLoaded", () => addCopyCodeButtons());
 document.addEventListener("astro:after-swap", () => addCopyCodeButtons());
+</script> -->
+
+<script is:inline defer>
+function addCopyCodeButtons() {
+  const copyButtonLabel = "copy";
+  const codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+  async function copyCode(codeBlock, copyButton) {
+    // Exclude the button text by cloning and removing button
+    const clone = codeBlock.cloneNode(true);
+    const button = clone.querySelector(".copy-code");
+    if (button) button.remove();
+
+    const textToCopy = clone.innerText;
+    await navigator.clipboard.writeText(textToCopy);
+
+    copyButton.innerText = "copied!";
+    setTimeout(() => (copyButton.innerText = copyButtonLabel), 2000);
+  }
+
+  for (let pre of codeBlocks) {
+    if (pre.querySelector(".copy-code")) continue;
+
+    const copyButton = document.createElement("button");
+    copyButton.className = "copy-code";
+    copyButton.innerText = copyButtonLabel;
+
+    pre.style.position = "relative";
+    pre.appendChild(copyButton);
+
+    copyButton.addEventListener("click", async () => {
+      await copyCode(pre, copyButton);
+    });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", addCopyCodeButtons);
+document.addEventListener("astro:after-swap", addCopyCodeButtons);
 </script>
+
 
 <!-- Analytics Testing and Debugging (Development Only) -->
 {isDevelopment && (
