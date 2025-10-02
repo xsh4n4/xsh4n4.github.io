@@ -10,8 +10,6 @@ support: true
 last_modified_at: 2025-08-19T16:21:31
 ---
 
-# “idog.py” CTF Write-up (Dream Multiplication & AES)
-
 ## Challenge Overview
 
 This challenge provided a short Python script idog.py along with a meme image. At first glance the image suggested a joke multiplication problem, but the code revealed a deeper puzzle involving a custom multiplication function and AES decryption.
@@ -26,8 +24,6 @@ When executed, the script:
 * Uses (x, y) to derive an AES key via
   sha256(str((x, y)).encode()).digest().
 * Decrypts a fixed ciphertext under AES-ECB and prints the flag.
-
----
 
 ## Key Observations (Understanding the Mechanism)
 
@@ -61,7 +57,6 @@ When executed, the script:
 
    Only the correct (x, y) yields a meaningful plaintext flag.
 
----
 
 ## Exploitation (Finding (x, y))
 
@@ -113,8 +108,6 @@ Decrypting the provided ciphertext under AES-ECB with this key yields:
 Here is your flag: SEKAI{iSOgenni_in_mY_D1234M5;_iS_it_T00_s00n}
 
 
----
-
 ## Running It End-to-End
 
 bash
@@ -123,16 +116,11 @@ Enter an 8-digit multiplicand: 49228443
 Enter a 7-digit multiplier: 9773647
 Here is your flag: SEKAI{iSOgenni_in_mY_D1234M5;_iS_it_T00_s00n}
 
-
----
-
 ## Final Flag
 
 
 sekai{iSOgenni_in_mY_D1234M5;_iS_it_T00_s00n}
 
-
----
 
 ## Neat!
 
