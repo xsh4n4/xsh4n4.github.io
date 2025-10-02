@@ -3,7 +3,7 @@ const site = {
   title: "xsh4n4's", // Navigation and site title
   titleAlt: "xsh4n4's", // Title for schema.org JSONLD
   // eslint-disable-next-line prettier/prettier
-  description: 'Suhana Shaik is a Blockchain developer and cyber security enthusiast.',
+  description: 'A personal space to document my journey in tech - featuring technical articles, CTF writeups and challenges, and a curated collection of projects, developments, and explorations. A hub for learning, sharing, and diving deep into the world of cybersecurity and technology.',
   url: 'https://xsh4n4.github.io', // Domain of your site. No trailing slash!
   siteLanguage: 'en', // Language Tag on <html> element
   image: {
