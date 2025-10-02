@@ -68,7 +68,7 @@ export default defineConfig({
   base: '/',
   output: "static", // static build
   outDir: 'dist',
-   trailingSlash: "always",
+  //  trailingSlash: "always",
   integrations: [mdx(), playformCompress()],
   markdown: {
     syntaxHighlight: 'prism',

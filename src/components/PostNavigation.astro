@@ -1,4 +1,4 @@
----
+<!-- ---
 import style from '../styles/pagination.module.css'
 import Link from "@components/Link.astro";
 const { prevPost, nextPost } = Astro.props;
@@ -6,31 +6,50 @@ const { prevPost, nextPost } = Astro.props;
 
 <nav class={style.pagination}>
   {prevPost?.slug ? (
-    // <Link to={prevPost?.slug} rel="prev" className={style.item}>
-    <a href={`/${prevPost.slug}/`} rel="prev" class={style.item}>
-  ← {prevPost.data.title}
-</a>
+    
+//     <a href={`/${prevPost.slug}/`} rel="prev" class={style.item}>
+//   ← {prevPost.data.title}
+// </a>
 
-    //   <span class={style.iconPrev}>←</span>
-    //   <span class={style.itemText}>{prevPost?.data.title}</span>
-    // </Link>
+<Link to={prevPost?.slug} rel="prev" className={style.item}>
+      <span class={style.iconPrev}>←</span>
+      <span class={style.itemText}>{prevPost?.data.title}</span>
+    </Link>
   ) : (
     <div class={style.item} />
   )}
   {nextPost?.slug ? (
-    <a href={`/${nextPost.slug}/`} rel="next" class={style.item}>
-      → {nextPost.data.title}
-    </a>
+    // <a href={`/${nextPost.slug}/`} rel="next" class={style.item}>
+    //   → {nextPost.data.title}
+    // </a>
 
-    // <Link
-    //   to={nextPost?.slug}
-    //   rel="next"
-    //   className={`${style.item} ${style.itemRight}`}
-    // >
-    //   <span class={style.itemText}>{nextPost?.data.title}</span>
-    //   <span class={style.iconNext}>→</span>
-    // </Link>
+    <Link
+      to={nextPost?.slug}
+      rel="next"
+      className={`${style.item} ${style.itemRight}`}
+    >
+      <span class={style.itemText}>{nextPost?.data.title}</span>
+      <span class={style.iconNext}>→</span>
+    </Link>
   ) : (
     <div class={style.item} />
   )}
-</nav>
+</nav> -->
+<!-- 
+<nav class={style.pagination}>
+  {prevPost ? (
+    <a href={`/${prevPost.collection}/${prevPost.slug}/`} rel="prev" class={style.item}>
+      ← {prevPost.data.title}
+    </a>
+  ) : (
+    <div class={style.item} />
+  )}
+
+  {nextPost ? (
+    <a href={`/${nextPost.collection}/${nextPost.slug}/`} rel="next" class={`${style.item} ${style.itemRight}`}>
+      {nextPost.data.title} →
+    </a>
+  ) : (
+    <div class={style.item} />
+  )}
+</nav> -->
