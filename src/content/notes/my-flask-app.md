@@ -10,14 +10,15 @@ support: true
 last_modified_at: 2025-08-17T16:21:31
 ---
 
+## Challenge Overview
 
-When I was playing **Sekai CTF 2025**, one challenge that stuck with me was called **My Flask App**. At first glance it looked like just another boring Flask file-read problem, but it turned out to have a neat twist. Here’s how I went from staring at the Dockerfile to pulling the flag out of nowhere.
+While competing in **Sekai CTF 2025**, I came across an interesting web challenge called **My Flask App**. Initially, it seemed like your typical Flask application with a file reading vulnerability, but there was an interesting twist that made it more engaging than expected. Let me walk you through my approach to solving this one.
 
-## Opening the Box
+## Initial Analysis
 
-The first thing I always do with web challenges is check the **Dockerfile**. That’s usually where the authors leave little hints.
+Whenever I tackle web challenges, my first step is always to examine the **Dockerfile**. This usually reveals important details about how the application is configured and deployed.
 
-This one looked straightforward — install Flask, copy in the app, start the server. Nothing surprising… until I noticed what it did with the flag:
+Here's what I found:
 
 ```docker
 FROM python:3.11-slim
@@ -38,13 +39,13 @@ EXPOSE 5000
 CMD ["python", "app.py"]
 ```
 
-Aha. So the flag wasn’t at `/flag.txt`. Instead, every time the container spun up, it got renamed to something like `/flag-VenUXnNXjh9MJxOH6m8xHvAR2oG9cmmG.txt`
+The interesting part here was the flag handling. Instead of leaving it at a predictable location like `/flag.txt`, the setup script renames it to something like `/flag-VenUXnNXjh9MJxOH6m8xHvAR2oG9cmmG.txt` — a completely random 32-character alphanumeric string appended to the filename.
 
-A 32-character random suffix. No way I was going to brute-force that. I knew the game now: the vulnerability would be trivial, but finding the *flag path* would be the real puzzle.
+This immediately told me that while exploiting the application might be straightforward, discovering the actual flag location would require some creative thinking. Brute-forcing 32 random characters? Not happening.
 
-## Peeking Inside the Flask App
+## Examining the Application Code
 
-Next stop: `app.py`. And sure enough, the code was as barebones as it gets:
+Next, I dove into `app.py` to understand what we're working with:
 
 ```python
 from flask import Flask, request, render_template
@@ -73,107 +74,114 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
 ```
 
-- `debug=True` → At the time, I brushed it off. “Probably just left in by the author for testing” I thought. It didn’t seem like something exploitable, because even with debug mode on, I’d still need the Werkzeug PIN to interact with anything useful. So, I kept moving and focused on other parts of the app.
-- `/` → serve an index page.
-- `/view` → takes a `filename`, opens it, and dumps the content.
+The application was remarkably simple:
+- The root endpoint (`/`) just serves a basic HTML page
+- The `/view` endpoint accepts a `filename` parameter and reads its contents
+- Most importantly: **no input validation whatsoever**
+- I noticed `debug=True` was enabled, but at first I didn't think much of it — figured it was just left in during development
 
-No filters. No checks. Nothing.
+This was clearly a **Local File Inclusion (LFI)** vulnerability. I could read any file on the system that the `nobody` user had permissions for. The vulnerability itself was trivial to exploit.
 
-I didn’t even need to think twice — this was **arbitrary file read** on a silver platter.
+The real challenge? Finding where that randomly-named flag file was hiding.
 
-The exploit part was done. The mystery was still: *how do I find the randomized flag filename?*
+## Hunting for the Flag
 
-## Chasing the Flag
+With unrestricted file read access, I had plenty of options to explore. In Linux containers, the `/proc` filesystem is a goldmine of runtime information about the system and running processes.
 
-At this point, I went through my mental checklist. With arbitrary file read, you basically have the whole container at your fingertips, so the question is **where to look**.
+I started testing various paths:
+- `/proc/self/cmdline` - showed the command used to start the process
+- `/proc/self/environ` - environment variables
+- `/proc/self/cwd` - current working directory
 
-`/proc` is always an interesting target in Linux — it’s full of runtime metadata. I started poking around: `/proc/self/cmdline`, `/proc/self/environ`, and then I remembered: *mounts*.
+Then I remembered something about how Linux tracks filesystem mounts. Every mounted filesystem gets logged by the kernel, and this information is accessible through `/proc/mounts`.
 
-I pulled up `/proc/mounts`:
-
+I made a request to:
 ```
 /view?filename=/proc/mounts
 ```
 
-And right there, staring back at me, was the jackpot:
+And there it was, clear as day:
 
 ```
 /dev/nvme0n1p1 /flag-VenUXnNXjh9MJxOH6m8xHvAR2oG9cmmG.txt ext4 ro,...
 ```
 
-The entire randomized flag path, exposed in plain text.
+The complete path to the flag file, including the random suffix, just sitting there in the mount table!
 
-## Why Did That Work?
+## Understanding the Mount Leak
 
-At first I was a little surprised. Why would the random flag filename show up in the mount table?
+Initially, I wondered why the randomized filename would even appear in `/proc/mounts`. After thinking about it, I realized what was happening.
 
-Then it clicked: the challenge wasn’t just *copying* the flag file into the container — it was **bind-mounting** it.
+The challenge infrastructure wasn't just copying the flag into the container — it was using a **bind mount** to make the flag file available inside the container. 
 
-A bind mount in Linux is when you take an existing file or directory and mount it somewhere else in the filesystem. Unlike plugging in a new drive, it’s just a second reference to the same underlying data.
+In Linux, a bind mount creates an additional reference to an existing file or directory at a different location in the filesystem tree. It's essentially aliasing one path to another. Since the kernel needs to track all mounted filesystems (including bind mounts), they all get recorded in `/proc/mounts`.
 
-And since all mounts have to be tracked by the kernel, they all end up listed in `/proc/mounts`. Which means… the container basically snitched on itself.
+This meant the container was essentially exposing its own flag location through standard Linux filesystem metadata.
 
-> **Note:** We can also use `/proc/self/mountinfo` only difference is `/proc/mounts` is a simplified, legacy view of mounted filesystems, while `/proc/self/mountinfo` is the detailed, canonical kernel view with extra metadata like IDs and propagation flags.
+> **Additional Note:** You could also use `/proc/self/mountinfo` for even more detailed information. The main difference is that `/proc/mounts` provides a simpler, traditional view of mounted filesystems, while `/proc/self/mountinfo` gives you more comprehensive kernel-level details including mount IDs and propagation settings.
 
-## The Final Step
+## Getting the Flag
 
-Armed with the path, it was just a matter of reading the file like any other:
+Once I had the exact path, retrieving the flag was straightforward:
 
 ```bash
 curl "http://server/view?filename=/flag-VenUXnNXjh9MJxOH6m8xHvAR2oG9cmmG.txt"
 ```
-Boom. Out came the flag:
+
+And just like that, the flag appeared:
 
 ```
 SEKAI{!s-+h1s_3VEN_<all3d_a_cv3}
 ```
 
+Success!
 
-## The intended Solution
+## Alternative Solution - The Intended Path
 
-When I looked at the intended solution later, I was stunned. That single line, `debug=True`, was the gateway to the whole exploit.
+After solving it, I checked the official writeup and discovered there was actually a much more complex intended solution that I had completely missed.
 
-Here’s how it unfolded:
+Remember that `debug=True` setting I glossed over? Turns out that was the key to the intended exploit chain.
 
-1. **File Disclosure**
+Here's how the intended solution worked:
+
+1. **Information Gathering via LFI**
     
-    The `/view?filename=...` endpoint gave us arbitrary file reads. Using it, I could grab sensitive system values like:
-    
-    - `/sys/class/net/eth0/address` → the MAC address
-    - `/proc/sys/kernel/random/boot_id` → the boot ID
-2. **Rebuilding the PIN**
-    
-    Flask’s debugger console isn’t wide open — it generates a secret PIN using a mix of “public bits” (username, module name, Flask app path) and “private bits” (the MAC + boot ID).
-    
-    By replicating Werkzeug’s `get_pin` function, I could calculate the exact PIN the server expected.
-    
-3. **Bypassing Host Checks**
-    
-    Normally, access to the debugger console is restricted. But by sending requests with `Host: 127.0.0.1`, I was able to trick the app into thinking I was local. This exposed the hidden `SECRET` value directly from `/console`.
-    
-4. **Authenticating to the Console**
-    
-    With the computed **PIN** and the leaked **SECRET**, I called `pinauth` and received a valid session cookie for the debugger console.
-    
-5. **Remote Code Execution**
-    
-    Once authenticated, the debugger console gave me full Python code execution.
+    Using the file read vulnerability, you could extract specific system information:
+    - MAC address from `/sys/class/net/eth0/address`
+    - Boot ID from `/proc/sys/kernel/random/boot_id`
+    - Other system identifiers
 
-The intended chain was: **LFI → PIN reconstruction → SECRET leak → debugger auth → RCE → flag**.
+2. **Werkzeug PIN Generation**
+    
+    Flask's debug console is protected by a PIN that's generated using specific system values. By collecting the "public bits" (like username, module name, and app path) and "private bits" (MAC address and boot ID), you could recreate Werkzeug's PIN generation algorithm and compute the correct PIN.
 
-Official solve can be found [here](https://github.com/project-sekai-ctf/sekaictf-2025/blob/main/web/my-flask-app/solution/solve.py).
+3. **Bypassing Access Restrictions**
+    
+    The debug console typically restricts access to localhost only. However, by manipulating the `Host` header to `127.0.0.1`, you could trick the application into treating your request as local, which would expose a `SECRET` value from the `/console` endpoint.
 
-Looking back, I realize the real hint was sitting right there in the open — `debug=True` — I just underestimated it.
+4. **Console Authentication**
+    
+    With both the calculated **PIN** and the leaked **SECRET**, you could call the `pinauth` endpoint to obtain a valid session cookie for the debug console.
 
-## Final Thoughts
+5. **Achieving Remote Code Execution**
+    
+    Once authenticated to the debug console, you'd have full Python code execution capabilities, allowing you to run arbitrary commands and read the flag directly.
 
-What I really enjoyed about *My Flask App* was how it played on expectations. At first glance it screamed *“just another Flask LFI”*, but the randomized flag path flipped the script. Instead of brute force or guesswork, the challenge nudged you to think about **what Linux exposes by design**.
+The complete intended exploit chain was: **LFI → System info collection → PIN calculation → SECRET extraction → Console authentication → RCE → Flag retrieval**.
 
-The beauty was in the duality of solutions:
+You can find the official solution script [here](https://github.com/project-sekai-ctf/sekaictf-2025/blob/main/web/my-flask-app/solution/solve.py).
 
-- The **bind-mount leak** route — where `/proc/mounts` betrayed the randomized filename.
-- The **debug=True route** — where replicating Werkzeug’s PIN logic unlocked the powerful Flask debugger for full RCE.
+In retrospect, I completely underestimated the significance of that `debug=True` line. It was hiding in plain sight the entire time.
 
-Both paths taught a valuable lesson: even the most trivial vulnerabilities (like arbitrary file read or a forgotten `debug=True`) can snowball into full compromise if you understand the environment well enough.
+## Closing Thoughts
 
-That’s what made this problem stick with me — it wasn’t about grinding through payloads, but about *observing carefully, connecting the dots, and leveraging the system against itself*.
+What made *My Flask App* memorable for me was how it subverted typical CTF patterns. On the surface, it looked like just another Flask LFI challenge, but the randomized flag path added an interesting layer that forced you to think beyond simple path traversal.
+
+I particularly appreciated that there were two valid approaches:
+
+- **My solution** - exploiting the bind-mount configuration leak through `/proc/mounts` to discover the randomized filename
+- **The intended solution** - leveraging `debug=True` to reconstruct the Werkzeug PIN and gain RCE through the Flask debugger
+
+Both approaches highlighted an important lesson: even simple vulnerabilities like arbitrary file reads or forgotten debug flags can lead to complete system compromise when combined with deep knowledge of the underlying platform.
+
+What I took away from this challenge wasn't about memorizing payloads or following scripts — it was about careful observation, understanding how systems work at a fundamental level, and using that knowledge to find creative solutions. Sometimes the simplest path forward is the one hidden in the system's own design.

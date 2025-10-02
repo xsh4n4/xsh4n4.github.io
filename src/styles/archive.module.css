@@ -3,13 +3,14 @@
 /* Add this to your archive.module.css or global CSS file */
 
 /* Button container */
-.buttons {
+:global(.buttons) {
   display: flex;
   gap: 1rem;
   margin-top: 1.5rem;
-  margin-bottom: 1.5rem; /* Bottom padding for container */
+  margin-bottom: 1.5rem;
   flex-wrap: wrap;
 }
+
 
 /* Base button styles */
 .button,
@@ -47,15 +48,16 @@
 
 /* Responsive adjustments */
 @media (max-width: 640px) {
-  .buttons {
+  :global(.buttons) {
     flex-direction: column;
   }
-  
+
   .button,
   :global(.button) {
     width: 100%;
   }
 }
+
 
 /* .btnGroup {
   display: flex;

@@ -1,10 +1,10 @@
 ---
-title: "SekaiCTF 2025/Reverse/DreamMultiply"
+title: "SekaiCTF 2025/Rev/DreamMultiply"
 excerpt: "sekai{iSOgenni_in_mY_D1234M5;_iS_it_T00_s00n}"
 date: 2025-08-19
 path: /notes/dream-multiply/
 categories: [notes]
-tags: [sekai-ctf-2k25, reverse, ctf, crypto, binary, aes]
+tags: [sekai-ctf-2k25, rev, ctf, crypto, binary, aes]
 comments: true
 support: true
 last_modified_at: 2025-08-19T16:21:31

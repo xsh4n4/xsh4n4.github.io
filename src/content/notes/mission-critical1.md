@@ -1,10 +1,10 @@
 ---
-title: "SunshineCTF 2025/Reverse/Missioncritical1"
+title: "SunshineCTF 2025/Rev/Missioncritical1"
 excerpt: "sun{e4sy_s4t3ll1t3_3131}"
 date: 2025-09-28
 path: /notes/mission-critical1/
 categories: [notes]
-tags: [sunshine-ctf-2k25, reverse, ctf, binary]
+tags: [sunshine-ctf-2k25, rev, ctf, binary]
 comments: true
 support: true
 last_modified_at: 2025-09-28T16:21:31
@@ -13,7 +13,7 @@ last_modified_at: 2025-09-28T16:21:31
 *Category:* Reverse / Binary   
 *Platform:* ELF x86_64 (PIE, stripped)
 
-*Description*:Ground Control to Space Cadet!
+*Description*: Ground Control to Space Cadet!
 
 We've intercepted a satellite control program but can't crack the authentication sequence. The satellite is in an optimal transmission window and ready to accept commands.  
 Your mission: Reverse engineer the binary and find the secret command to gain access to the satellite systems.
