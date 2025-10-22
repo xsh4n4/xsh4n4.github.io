@@ -64,4 +64,15 @@ export const POST: APIRoute = async ({ request }: APIContext) => {
       headers: { 'Content-Type': 'application/json' },
     });
 
-  
+    return new Response(JSON.stringify({ message: 'Submitted successfully' }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch (err) {
+    console.error(err);
+    return new Response(JSON.stringify({ error: 'Failed to send email' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+};
